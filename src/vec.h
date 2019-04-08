@@ -2,8 +2,8 @@
 // Created by Connor Baker on 2019-04-08.
 //
 
-#ifndef TEMP_VEC_H
-#define TEMP_VEC_H
+#ifndef C_VEC_H
+#define C_VEC_H
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -133,6 +133,7 @@ void ITERATE(T)(VEC(T) *v, void (f)(T *)) { \
  * The function void (f)(T *, T *) takes as arguments an element of
  * the vector and the address of the accumulator.
  * The accumulator passed in contains the initial value.
+ * FOLDL(T)(v, f, acc) = f(v_0, f(v_1, ... f(v_n, acc) ... ))
  */
 #define FOLDL(T) FOLDL_##T
 
@@ -147,13 +148,14 @@ T FOLDL(T)(VEC(T) *v, void (f)(T *, T *), T accumulator) { \
 }
 
 /**
- * DEFINES THE FOLDL FUNCTION.
+ * DEFINES THE FOLDR FUNCTION.
  * The function takes the address of a vector, a function, and an
  * accumulator.
  * The vector holds the data that we'll fold over.
  * The function void (f)(T *, T *) takes as arguments an element of
  * the vector and the address of the accumulator.
  * The accumulator passed in contains the initial value.
+ * FOLDR(T)(v, f, acc) = f(v_n, f(v_n-1, ... f(v_0, acc) ... ))
  */
 #define FOLDR(T) FOLDR_##T
 
@@ -187,7 +189,8 @@ T FOLDR(T)(VEC(T) *v, void (f)(T *, T *), T accumulator) { \
     double: "%f",                   \
     long double: "%Lf",             \
     char *: "%s",                   \
-    default *: "%p")
+    void *: "%p",                   \
+    default: "%p")
 
 #define PRINT(T) PRINT_##T
 
@@ -205,4 +208,4 @@ void PRINT(T)(VEC(T) *v) { \
 }
 
 
-#endif //TEMP_VEC_H
+#endif //C_VEC_H
