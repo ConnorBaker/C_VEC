@@ -47,7 +47,7 @@ void _Noreturn vec_creation_error(const char *error) {
     return v;                                                                  \
   }
 
-#define DEL_VEC(v) DEL_VEC_##T
+#define DEL_VEC(T) DEL_VEC_##T
 
 #define DEFINE_PROTO_DEL_VEC(T) void DEL_VEC(T)(VEC(T) *);
 
@@ -181,7 +181,7 @@ void _Noreturn vec_creation_error(const char *error) {
       vec_creation_error("Unable to copy memory contents from first VEC\n");   \
     }                                                                          \
     /* TODO: Opportunity to use omp_target_memcpy() here? */                   \
-    if (memcpy(v->dat + a_size, b->dat, sizeof(T0) * b_size) == NULL) {        \
+    if (memcpy(v->dat + a_size, b->dat, sizeof(T) * b_size) == NULL) {        \
       vec_creation_error("Unable to copy memory contents from second VEC\n");  \
     }                                                                          \
     return v;                                                                  \
