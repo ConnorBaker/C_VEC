@@ -4,6 +4,9 @@ project(vec_c C)
 set(CMAKE_C_STANDARD 11)
 
 add_executable(main src/main.c src/vec.h)
+add_executable(and_or_example src/and_or_example.c)
+add_executable(concat_example src/concat_example.c)
+add_executable(foldl_foldr_example src/foldl_foldr_example.c)
 
 set(CLANG_FLAGS "-Ofast -Weverything -Wpedantic -std=c11 -fopenmp -lomp")
 set(APPLE_CLANG_FLAGS "-Xpreprocessor")
