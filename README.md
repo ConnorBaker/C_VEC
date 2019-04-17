@@ -1,26 +1,24 @@
 # C_VEC
+
 Fancy "Generic" C arrays with some nice built-in operations.
 
 The goal is to eventually get parity, through macros, with most of the functions that Haskell provides for operations on lists.
 
 ## General notes on C_VEC
 
-+ These are not performance-oriented implementations -- this is an exercise in 
-seeing what I
- can do 
-with macros
++ These are not performance-oriented implementations -- this is an exercise in seeing what I can do with macros
 + I haven't created unit tests and debugging a macro is a notoriously difficult task -- there *are almost certainly* bugs
-+ Though the functions make look cool, and I've certainly borrowed 
-inspiration from Haskell in terms of naming, make no mistake: these are C 
-macros. We don't have any of the niceties that higher-level languages provide
-. There's no possibility of composition as this is currently written (e.g. 
-`VEC(VEC(int))` does NOT do what you think it does... unless your guess was "it does nott compile because VEC_VEC_int isn't defined", in which case you should help me implement it). 
++ Though the functions make look cool, and I've certainly borrowed inspiration from Haskell in terms of naming, make no mistake: these are C macros. We don't have any of the niceties that higher-level languages provide
+. There's no possibility of composition as this is currently written (e.g. `VEC(VEC(int))` does NOT do what you think it does... unless your guess was "it doesn't compile because `VEC_VEC_int` isn't defined", in which case you should help me implement it).
+
+### More pressing matters
+
+Due to the way that we emulate "generic" functions (sting concatenation with token pasting using macros) there's a lot of conflict with function names. One way around this is to create a header which includes `vec.h` and to use every definition macro with all the types you could need. It's ugly, but at I'm at a loss for a better solution.
 
 ## Currently supported operations
 
 + `VEC(T)* NEW_VEC(T)(int length)`
-  + Returns a pointer to a `VEC` structure, where `v->dat` is a reference to a 
-  `calloc`'d array of type `T` and length `length`. Since I use `calloc`, the elements of `v->dat` are initially zero.
+  + Returns a pointer to a `VEC` structure, where `v->dat` is a reference to a `calloc`'d array of type `T` and length `length`. Since I use `calloc`, the elements of `v->dat` are initially zero.
 + `void DEL_VEC(T)(VEC(T) *v)`
   + Releases the memory held by `v`.
 + `void FOR_EACH(T)(VEC(T) *v, void (f)(T *))`
@@ -31,6 +29,7 @@ macros. We don't have any of the niceties that higher-level languages provide
   + Identical behavior to `NEW_VEC`, but each element of `v->dat` is initialized to `t`.
 + `void ITERATE(T)(VEC(T) *v, void (f)(T *))`
   + The function `f` is applied to each element of `v->dat` a number of times equal to the element's index. As an example:
+  
   ~~~c
   void addOne(int *n) {
     (*n)++;
@@ -41,19 +40,28 @@ macros. We don't have any of the niceties that higher-level languages provide
     // v->dat = [0, 1, 2, 3, 4, 5, 6, 7] 
   }
   ~~~
+
 + `T FOLDL(T)(VEC(T) *v, void (f)(T *, T *), T accumulator)`
   + Applies some binary operation `f` to each element of `v`, starting at the high index, and storing the return value in `accumulator`. Let us denote each element `v->dat[n]` with `v_n` where `n` is the index, and write the accumulator as `acc`. Then in general,
-  ~~~
+
+  ~~~c
   FOLDL(T)(v, f, acc) = f(v_0, f(v_1, ... f(v_n, acc) ... ))
   ~~~
+
 + `T FOLDR(T)(VEC(T) *v, void (f)(T *, T *), T accumulator)`
   + Applies some binary operation `f` to each element of `v`, starting at the low index, and storing the return value in `accumulator`. Let us denote each element `v->dat[n]` with `v_n` where `n` is the index, and write the accumulator as `acc`. Then in general,
-  ~~~
+
+  ~~~c
   FOLDR(T)(v, f, acc) = f(v_n, f(v_n-1, ... f(v_0, acc) ... ))
   ~~~
+
++ `VEC(T) * CONCAT(T)(VEC(T) * a, VEC(T) * b)`
+  + Concatenates two vectors, returning a new vector which is the result of appending `b` to `a`.
+
 + `void PRINT(T)(VEC(T) *v)`
   + Prints out the contents of `v` delimited by spaces, assuming that it is of one of the following types:
-    ~~~
+
+    ~~~c
     #define FORMAT_STR(T) _Generic(T,   \
         char: "%c",                     \
         signed char: "%hhd",            \
@@ -72,13 +80,13 @@ macros. We don't have any of the niceties that higher-level languages provide
         char *: "%s",                   \
         default *: "%p")
     ~~~
-    
-    
+
 ## Arriving Soon*
 
 The following is a wish-list of sorts of Haskell functions on lists that I'd like to implement:
 
 + `++` (list concatenation)
+  + Done! See `CONCAT`.
 + `:` (cons)
 + `head` (returns the first element of a list)
 + `last` (returns the last element of a list)
