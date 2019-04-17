@@ -2,11 +2,10 @@
 // Created by Connor Baker on 2019-04-08.
 //
 
-// For printing the OMP version
-#include <omp.h>
-
 #include "vec.h"
-
+#include <omp.h> // For printing the OMP version TODO: ifdef this
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef int T0;
 
@@ -18,6 +17,7 @@ DEFINE_PROTO_REPEAT(T0)
 DEFINE_PROTO_FOLDL(T0)
 DEFINE_PROTO_FOLDR(T0)
 DEFINE_PROTO_ITERATE(T0)
+DEFINE_PROTO_CONCAT(T0)
 DEFINE_PROTO_PRINT(T0)
 
 DEFINE_NEW_VEC(T0)
@@ -26,6 +26,7 @@ DEFINE_REPEAT(T0)
 DEFINE_FOLDL(T0)
 DEFINE_FOLDR(T0)
 DEFINE_ITERATE(T0)
+DEFINE_CONCAT(T0)
 DEFINE_PRINT(T0)
 
 void and (T0 * n, T0 *acc) { *acc &= *n; }
@@ -53,8 +54,8 @@ void and_or_example() {
 
   printf("\n");
 
-  DEL_VEC(v0);
-  DEL_VEC(v1);
+  DEL_VEC(T0)(v0);
+  DEL_VEC(T0)(v1);
 }
 
 void double_me(T0 *n) { (*n) *= 2; }
@@ -84,7 +85,42 @@ void alt_sum_diff_example() {
   printf("Alternating sum/difference folding right: %d\n",
          FOLDR(T0)(v, alt_sum_diff, 0));
 
-  DEL_VEC(v);
+  printf("\n");
+
+  DEL_VEC(T0)(v);
+}
+
+void concat_example() {
+  VEC(T0) *a = REPEAT(T0)(1, 1);
+  VEC(T0) *b = REPEAT(T0)(2, 2);
+  VEC(T0) *c = REPEAT(T0)(3, 3);
+
+  printf("vec a:\n");
+  PRINT(T0)(a);
+
+  printf("vec b:\n");
+  PRINT(T0)(b);
+
+  printf("vec c:\n");
+  PRINT(T0)(c);
+
+  VEC(T0) *d = CONCAT(T0)(a, b);
+
+  printf("vec d:\n");
+  PRINT(T0)(d);
+
+  VEC(T0) *e = CONCAT(T0)(d, c);
+
+  printf("vec e:\n");
+  PRINT(T0)(e);
+
+  DEL_VEC(T0)(a);
+  DEL_VEC(T0)(b);
+  DEL_VEC(T0)(c);
+  DEL_VEC(T0)(d);
+  DEL_VEC(T0)(e);
+
+  printf("\n");
 }
 
 int main() {
@@ -93,5 +129,8 @@ int main() {
   and_or_example();
 
   alt_sum_diff_example();
+
+  concat_example();
+
   return 0;
 }

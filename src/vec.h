@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h> // For memcpy
 
 /**
  * DEFINES THE VECTOR STRUCTURE AND CREATION/DELETION
@@ -34,7 +35,7 @@ void _Noreturn vec_creation_error(const char *error) {
     if (length <= 0) {                                                         \
       vec_creation_error("Unable to create non-positive length NEW_VEC");      \
     }                                                                          \
-    VEC(T) *v = (VEC(T) *)calloc(length, sizeof(VEC(T)));                      \
+    VEC(T) *v = (VEC(T) *)calloc(1, sizeof(VEC(T)));                           \
     if (v == NULL) {                                                           \
       vec_creation_error("Unable to allocate memory for NEW_VEC");             \
     }                                                                          \
@@ -161,6 +162,29 @@ void _Noreturn vec_creation_error(const char *error) {
       f(v->dat + i, &accumulator);                                             \
     }                                                                          \
     return accumulator;                                                        \
+  }
+
+/**
+ * DEFINES THE CONCAT FUNCTION
+ */
+#define CONCAT(T) CONCAT_##T
+
+#define DEFINE_PROTO_CONCAT(T) VEC(T) * CONCAT(T)(VEC(T) *, VEC(T) *);
+
+#define DEFINE_CONCAT(T)                                                       \
+  VEC(T) * CONCAT(T)(VEC(T) * a, VEC(T) * b) {                                 \
+    const int a_size = a->len;                                                 \
+    const int b_size = b->len;                                                 \
+    VEC(T) *v = NEW_VEC(T)(a_size + b_size);                                   \
+    /* TODO: Opportunity to use omp_target_memcpy() here? */                   \
+    if (memcpy(v->dat, a->dat, sizeof(T) * a_size) == NULL) {                  \
+      vec_creation_error("Unable to copy memory contents from first VEC\n");   \
+    }                                                                          \
+    /* TODO: Opportunity to use omp_target_memcpy() here? */                   \
+    if (memcpy(v->dat + a_size, b->dat, sizeof(T0) * b_size) == NULL) {        \
+      vec_creation_error("Unable to copy memory contents from second VEC\n");  \
+    }                                                                          \
+    return v;                                                                  \
   }
 
 /**
