@@ -5,14 +5,22 @@ The goal is to eventually get parity, through macros, with most of the functions
 
 ## General notes on C_VEC
 
-+ These are not super performant -- this is an exercise in seeing what I can do with macros
++ These are not performance-oriented implementations -- this is an exercise in 
+seeing what I
+ can do 
+with macros
 + I haven't created unit tests and debugging a macro is a notoriously difficult task -- there *are almost certainly* bugs
-+ Though the functions make look cool, and I've certainly borrowed inspiration from Haskell in terms of naming, make no mistake: these are C macros. We don't have any of the niceties that higher-level languages provide. There's no possibility of composition as this is currently written (e.g. `VEC(VEC(int))` does NOT do what you think it does... unless your guess was "it doesn't compile because VEC_VEC_int isn't defined", in which case you should help me implement it). 
++ Though the functions make look cool, and I've certainly borrowed 
+inspiration from Haskell in terms of naming, make no mistake: these are C 
+macros. We don't have any of the niceties that higher-level languages provide
+. There's no possibility of composition as this is currently written (e.g. 
+`VEC(VEC(int))` does NOT do what you think it does... unless your guess was "it does nott compile because VEC_VEC_int isn't defined", in which case you should help me implement it). 
 
 ## Currently supported operations
 
 + `VEC(T)* NEW_VEC(T)(int length)`
-  + Returns a pointer to a `VEC` struct, where `v->dat` is a reference to a `calloc`'d array of type `T` and length `length`. Since I use `calloc`, the elements of `v->dat` are initially zero.
+  + Returns a pointer to a `VEC` structure, where `v->dat` is a reference to a 
+  `calloc`'d array of type `T` and length `length`. Since I use `calloc`, the elements of `v->dat` are initially zero.
 + `void DEL_VEC(T)(VEC(T) *v)`
   + Releases the memory held by `v`.
 + `void FOR_EACH(T)(VEC(T) *v, void (f)(T *))`
