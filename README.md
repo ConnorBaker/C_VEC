@@ -89,6 +89,7 @@ The following is a wish-list of sorts of Haskell functions on lists that I'd lik
   + Done! See `CONCAT`.
 + `:` (cons)
 + `head` (returns the first element of a list)
+  + Done!
 + `last` (returns the last element of a list)
 + `init` (returns all but the last element of a list)
 + `tail` (returns all but the first element of a list)
