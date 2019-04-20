@@ -225,4 +225,13 @@ void _Noreturn vec_creation_error(const char *error) {
     printf("\n");                                                              \
   }
 
+#define HEAD(T) HEAD_##T
+
+#define DEFINE_PROTO_HEAD(T) T HEAD(T)(VEC(T) *);
+
+#define DEFINE_HEAD(T)								\
+  T HEAD(T)(VEC(T) * v) {							\
+    return v->dat[0];								\
+  }
+
 #endif // C_VEC_H
