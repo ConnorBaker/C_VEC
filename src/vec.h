@@ -251,4 +251,29 @@ void _Noreturn vec_creation_error(const char *error) {
     return v->dat[(v->len)-1];							\
   }
 
+/**
+ * DEFINES THE MIN FUNCTION
+ * The function first takes a vector, and a comparison function
+ * that takes two arguments of the generic type T and returns a
+ * positive integer value if its first argument is "greater than"
+ * its second argument.
+ * The function returns the smallest element in the vector, according
+ * to the comparison function.
+ * This algorithm works by first assuming the vector's first argument
+ * is its smallest and then goes from there.
+ */
+
+#define MIN(T) MIN_##T
+
+#define DEFINE_PROTO_MIN(T) T MIN(T)(VEC(T) *, int (comp)(T, T));
+
+#define DEFINE_MIN(T)								\
+  T MIN(T)(VEC(T) *v, int (comp)(T, T)) {					\
+    T  min;									\
+    min = v->dat[0];								\
+    for(int i = 1; i < (v->len); i++)						\
+      if(comp(min, v->dat[i]) > 0) min = v->dat[i];				\
+    return min;									\
+  }
+
 #endif // C_VEC_H
