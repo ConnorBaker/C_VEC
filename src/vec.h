@@ -225,6 +225,10 @@ void _Noreturn vec_creation_error(const char *error) {
     printf("\n");                                                              \
   }
 
+/**
+ * DEFINES THE HEAD FUNCTION
+ */
+
 #define HEAD(T) HEAD_##T
 
 #define DEFINE_PROTO_HEAD(T) T HEAD(T)(VEC(T) *);
@@ -232,6 +236,19 @@ void _Noreturn vec_creation_error(const char *error) {
 #define DEFINE_HEAD(T)								\
   T HEAD(T)(VEC(T) * v) {							\
     return v->dat[0];								\
+  }
+
+/**
+ * DEFINES THE LAST FUNCTION
+ */
+
+#define LAST(T) LAST_##T
+
+#define DEFINE_PROTO_LAST(T) T LAST(T)(VEC(T) *);
+
+#define DEFINE_LAST(T)								\
+  T LAST(T)(VEC(T) * v) {							\
+    return v->dat[(v->len)-1];							\
   }
 
 #endif // C_VEC_H
