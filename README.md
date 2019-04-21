@@ -88,7 +88,7 @@ Due to the way that we emulate "generic" functions (string concatenation with to
   + Returns the last element of the vector.
 
 + `T MIN(T)(VEC(T) *v, int (comp)(T, T))`
-  + The function first takes a vector `v`, and a comparison function `int comp(T, T)` that returns a positive integer value if its first argument is "greater than" its second argument.
+  + Returns the smallest element in the vector. The function first takes a vector `v`, and a comparison function `int comp(T, T)` that returns a positive integer value if its first argument is "greater than" its second argument.
 
 ## Arriving Soon*
 
