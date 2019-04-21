@@ -81,6 +81,12 @@ Due to the way that we emulate "generic" functions (sting concatenation with tok
         default *: "%p")
     ~~~
 
++ `T HEAD(T)(VEC(T) *v)`
+  + Returns the first element of the vector.
+
++ `T LAST(T)(VEC(T) *v)`
+  + Returns the last element of the vector.
+
 ## Arriving Soon*
 
 The following is a wish-list of sorts of Haskell functions on lists that I'd like to implement:
