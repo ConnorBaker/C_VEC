@@ -8,12 +8,12 @@ The goal is to eventually get parity, through macros, with most of the functions
 
 + These are not performance-oriented implementations -- this is an exercise in seeing what I can do with macros
 + I haven't created unit tests and debugging a macro is a notoriously difficult task -- there *are almost certainly* bugs
-+ Though the functions make look cool, and I've certainly borrowed inspiration from Haskell in terms of naming, make no mistake: these are C macros. We don't have any of the niceties that higher-level languages provide
++ Though the functions may look cool, and I've certainly borrowed inspiration from Haskell in terms of naming, make no mistake: these are C macros. We don't have any of the niceties that higher-level languages provide
 . There's no possibility of composition as this is currently written (e.g. `VEC(VEC(int))` does NOT do what you think it does... unless your guess was "it doesn't compile because `VEC_VEC_int` isn't defined", in which case you should help me implement it).
 
 ### More pressing matters
 
-Due to the way that we emulate "generic" functions (sting concatenation with token pasting using macros) there's a lot of conflict with function names. One way around this is to create a header which includes `vec.h` and to use every definition macro with all the types you could need. It's ugly, but at I'm at a loss for a better solution.
+Due to the way that we emulate "generic" functions (string concatenation with token pasting using macros) there's a lot of conflict with function names. One way around this is to create a header which includes `vec.h` and to use every definition macro with all the types you could need. It's ugly, but at I'm at a loss for a better solution.
 
 ## Currently supported operations
 
@@ -87,15 +87,14 @@ Due to the way that we emulate "generic" functions (sting concatenation with tok
 + `T LAST(T)(VEC(T) *v)`
   + Returns the last element of the vector.
 
++ `T MIN(T)(VEC(T) *v, int (comp)(T, T))`
+  + Returns the smallest element in the vector. The function first takes a vector `v`, and a comparison function `int comp(T, T)` that returns a positive integer value if its first argument is "greater than" its second argument.
+
 ## Arriving Soon*
 
 The following is a wish-list of sorts of Haskell functions on lists that I'd like to implement:
 
-+ `++` (list concatenation)
-  + Done! See `CONCAT`.
 + `:` (cons)
-+ `head` (returns the first element of a list)
-  + Done!
 + `last` (returns the last element of a list)
 + `init` (returns all but the last element of a list)
 + `tail` (returns all but the first element of a list)
@@ -104,7 +103,6 @@ The following is a wish-list of sorts of Haskell functions on lists that I'd lik
   + `dropWhile` (returns a new list with elements dropped from the front while a condition holds)
 + `take` (returns a new list made of some number of elements from the front)
   + `takeWhile` (returns a new list made of elements front while a condition holds)
-+ `min` (returns the minimum of the list)
 + `max` (returns the maximum of the list)
 + `sum` (returns the sum of the list)
 + `prod` (returns the product of the list)
