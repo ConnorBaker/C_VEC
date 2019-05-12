@@ -1,27 +1,33 @@
 //
 // Created by Connor Baker on 2019-04-08.
 //
+// Includes all of the definitions of the functions supported by C_VEC.
+// Generally, if you are working on a project, you'd include this header file
+// and use the macros below to generate the definitions of all the functions
+// that you'd want to work with (which happens at compile time, since these are
+// all macros).
+// For an example, see vec_int.c
 
-#ifndef C_VEC_H
-#define C_VEC_H
+#ifndef C_VEC_DEFINITIONS_H
+#define C_VEC_DEFINITIONS_H
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> // For memcpy
 
+
+
+#include "vec_nomenclature.h"
+
+
+
 /**
  * DEFINES THE VECTOR STRUCTURE AND CREATION/DELETION
  */
-#define VEC(T) VEC_##T
-
 void _Noreturn vec_creation_error(const char *error) {
   fprintf(stderr, "%s\n", error);
   exit(1);
 }
-
-#define NEW_VEC(T) NEW_VEC_##T
-
-
 
 #define DEFINE_NEW_VEC(T)                                                      \
   VEC(T) * NEW_VEC(T)(int length) {                                            \
@@ -40,10 +46,6 @@ void _Noreturn vec_creation_error(const char *error) {
     return v;                                                                  \
   }
 
-#define DEL_VEC(T) DEL_VEC_##T
-
-
-
 #define DEFINE_DEL_VEC(T)                                                      \
   void DEL_VEC(T)(VEC(T) * v) {                                                \
     free(v->dat);                                                              \
@@ -53,10 +55,6 @@ void _Noreturn vec_creation_error(const char *error) {
 /**
  * DEFINES THE FOR_EACH FUNCTION
  */
-#define FOR_EACH(T) FOR_EACH_##T
-
-
-
 #define DEFINE_FOR_EACH(T)                                                     \
   void FOR_EACH(T)(VEC(T) * v, void(f)(T *)) {                                 \
     for (int i = 0; i < v->len; i++) {                                         \
@@ -67,10 +65,6 @@ void _Noreturn vec_creation_error(const char *error) {
 /**
  * DEFINES THE FOR_EACH_PAR FUNCTION, WHICH OPERATES IN PARALLEL
  */
-#define FOR_EACH_PAR(T) FOR_EACH_PAR_##T
-
-
-
 #define DEFINE_FOR_EACH_PAR(T)                                                 \
   void FOR_EACH_PAR(T)(VEC(T) * v, void(f)(T *)) {                             \
     _Pragma("omp parallel for default(none) shared(v, f)") for (int i = 0;     \
@@ -83,10 +77,6 @@ void _Noreturn vec_creation_error(const char *error) {
 /**
  * DEFINES THE REPEAT FUNCTION
  */
-#define REPEAT(T) REPEAT_##T
-
-
-
 #define DEFINE_REPEAT(T)                                                       \
   VEC(T) * REPEAT(T)(T t, int length) {                                        \
     VEC(T) *v = NEW_VEC(T)(length);                                            \
@@ -99,10 +89,6 @@ void _Noreturn vec_creation_error(const char *error) {
 /**
  * DEFINES THE ITERATE FUNCTION
  */
-#define ITERATE(T) ITERATE_##T
-
-
-
 #define DEFINE_ITERATE(T)                                                      \
   void ITERATE(T)(VEC(T) * v, void(f)(T *)) {                                  \
     for (int i = 0; i < v->len; i++) {                                         \
@@ -122,10 +108,6 @@ void _Noreturn vec_creation_error(const char *error) {
  * The accumulator passed in contains the initial value.
  * FOLDL(T)(v, f, acc) = f(v_0, f(v_1, ... f(v_n, acc) ... ))
  */
-#define FOLDL(T) FOLDL_##T
-
-
-
 #define DEFINE_FOLDL(T)                                                        \
   T FOLDL(T)(VEC(T) * v, void(f)(T *, T *), T accumulator) {                   \
     for (int i = v->len - 1; i >= 0; i--) {                                    \
@@ -144,10 +126,6 @@ void _Noreturn vec_creation_error(const char *error) {
  * The accumulator passed in contains the initial value.
  * FOLDR(T)(v, f, acc) = f(v_n, f(v_n-1, ... f(v_0, acc) ... ))
  */
-#define FOLDR(T) FOLDR_##T
-
-
-
 #define DEFINE_FOLDR(T)                                                        \
   T FOLDR(T)(VEC(T) * v, void(f)(T *, T *), T accumulator) {                   \
     for (int i = 0; i < v->len; i++) {                                         \
@@ -159,9 +137,6 @@ void _Noreturn vec_creation_error(const char *error) {
 /**
  * DEFINES THE CONCAT FUNCTION
  */
-#define CONCAT(T) CONCAT_##T
-
-
 #define DEFINE_CONCAT(T)                                                       \
   VEC(T) * CONCAT(T)(VEC(T) * a, VEC(T) * b) {                                 \
     const int a_size = a->len;                                                 \
@@ -172,7 +147,7 @@ void _Noreturn vec_creation_error(const char *error) {
       vec_creation_error("Unable to copy memory contents from first VEC\n");   \
     }                                                                          \
     /* TODO: Opportunity to use omp_target_memcpy() here? */                   \
-    if (memcpy(v->dat + a_size, b->dat, sizeof(T) * b_size) == NULL) {        \
+    if (memcpy(v->dat + a_size, b->dat, sizeof(T) * b_size) == NULL) {         \
       vec_creation_error("Unable to copy memory contents from second VEC\n");  \
     }                                                                          \
     return v;                                                                  \
@@ -201,10 +176,6 @@ void _Noreturn vec_creation_error(const char *error) {
     void *: "%p",                   \
     default: "%p")
 
-#define PRINT(T) PRINT_##T
-
-
-
 #define DEFINE_PRINT(T)                                                        \
   void PRINT(T)(VEC(T) * v) {                                                  \
     const char *format_str = FORMAT_STR(v->dat[0]);                            \
@@ -219,26 +190,14 @@ void _Noreturn vec_creation_error(const char *error) {
 /**
  * DEFINES THE HEAD FUNCTION
  */
-
-#define HEAD(T) HEAD_##T
-
-
-#define DEFINE_HEAD(T)								\
-  T HEAD(T)(VEC(T) * v) {							\
-    return v->dat[0];								\
-  }
+#define DEFINE_HEAD(T)                                                         \
+  T HEAD(T)(VEC(T) * v) { return v->dat[0]; }
 
 /**
  * DEFINES THE LAST FUNCTION
  */
-
-#define LAST(T) LAST_##T
-
-
-#define DEFINE_LAST(T)								\
-  T LAST(T)(VEC(T) * v) {							\
-    return v->dat[(v->len)-1];							\
-  }
+#define DEFINE_LAST(T)                                                         \
+  T LAST(T)(VEC(T) * v) { return v->dat[(v->len) - 1]; }
 
 /**
  * DEFINES THE MIN FUNCTION
@@ -251,17 +210,14 @@ void _Noreturn vec_creation_error(const char *error) {
  * This algorithm works by first assuming the vector's first argument
  * is its smallest and then goes from there.
  */
-
-#define MIN(T) MIN_##T
-
-
-#define DEFINE_MIN(T)								\
-  T MIN(T)(VEC(T) *v, int (comp)(T, T)) {					\
-    T  min;									\
-    min = v->dat[0];								\
-    for(int i = 1; i < (v->len); i++)						\
-      if(comp(min, v->dat[i]) > 0) min = v->dat[i];				\
-    return min;									\
+#define DEFINE_MIN(T)                                                          \
+  T MIN(T)(VEC(T) * v, int(comp)(T, T)) {                                      \
+    T min;                                                                     \
+    min = v->dat[0];                                                           \
+    for (int i = 1; i < (v->len); i++)                                         \
+      if (comp(min, v->dat[i]) > 0)                                            \
+        min = v->dat[i];                                                       \
+    return min;                                                                \
   }
 
-#endif // C_VEC_H
+#endif // C_VEC_DEFINITIONS_H

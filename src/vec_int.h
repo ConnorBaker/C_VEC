@@ -1,21 +1,13 @@
 //
 // Created by Connor Baker on 2019-04-17.
 //
-// This file allows you to change the type of C_VEC.
-// If you find functions you do not need, this is also
-// the place to remove those functions: simply comment
-// the corresponding "DEFINE_PROTO_" and "DEFINE_" macro
-// calls of the function you do not want and the compiler
-// will not compile those functions, if you need that kind
-// of thing.
-//
+// This file allows you to easily start doing things with C_VEC if you happen
+// to choose to use a pre-defined primitive type.
 
 #ifndef VEC_INT_H
 #define VEC_INT_H
 
 #include "vec_prototypes.h"
-
-//#include "vec_defs.h"
 
 DEFINE_VEC(int)
 
