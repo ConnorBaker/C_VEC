@@ -14,13 +14,6 @@
  */
 #define VEC(T) VEC_##T
 
-#define DEFINE_VEC(T)                                                          \
-  typedef struct vec_##T {                                                     \
-    T *dat;                                                                    \
-    int len;                                                                   \
-  } VEC(T);
-
-void vec_creation_error(const char *);
 void _Noreturn vec_creation_error(const char *error) {
   fprintf(stderr, "%s\n", error);
   exit(1);
@@ -28,7 +21,7 @@ void _Noreturn vec_creation_error(const char *error) {
 
 #define NEW_VEC(T) NEW_VEC_##T
 
-#define DEFINE_PROTO_NEW_VEC(T) VEC(T) * NEW_VEC(T)(int);
+
 
 #define DEFINE_NEW_VEC(T)                                                      \
   VEC(T) * NEW_VEC(T)(int length) {                                            \
@@ -49,7 +42,7 @@ void _Noreturn vec_creation_error(const char *error) {
 
 #define DEL_VEC(T) DEL_VEC_##T
 
-#define DEFINE_PROTO_DEL_VEC(T) void DEL_VEC(T)(VEC(T) *);
+
 
 #define DEFINE_DEL_VEC(T)                                                      \
   void DEL_VEC(T)(VEC(T) * v) {                                                \
@@ -62,7 +55,7 @@ void _Noreturn vec_creation_error(const char *error) {
  */
 #define FOR_EACH(T) FOR_EACH_##T
 
-#define DEFINE_PROTO_FOR_EACH(T) void FOR_EACH(T)(VEC(T) *, void(f)(T *));
+
 
 #define DEFINE_FOR_EACH(T)                                                     \
   void FOR_EACH(T)(VEC(T) * v, void(f)(T *)) {                                 \
@@ -76,8 +69,7 @@ void _Noreturn vec_creation_error(const char *error) {
  */
 #define FOR_EACH_PAR(T) FOR_EACH_PAR_##T
 
-#define DEFINE_PROTO_FOR_EACH_PAR(T)                                           \
-  void FOR_EACH_PAR(T)(VEC(T) *, void(f)(T *));
+
 
 #define DEFINE_FOR_EACH_PAR(T)                                                 \
   void FOR_EACH_PAR(T)(VEC(T) * v, void(f)(T *)) {                             \
@@ -93,7 +85,7 @@ void _Noreturn vec_creation_error(const char *error) {
  */
 #define REPEAT(T) REPEAT_##T
 
-#define DEFINE_PROTO_REPEAT(T) VEC(T) * REPEAT(T)(T, int);
+
 
 #define DEFINE_REPEAT(T)                                                       \
   VEC(T) * REPEAT(T)(T t, int length) {                                        \
@@ -109,7 +101,7 @@ void _Noreturn vec_creation_error(const char *error) {
  */
 #define ITERATE(T) ITERATE_##T
 
-#define DEFINE_PROTO_ITERATE(T) void ITERATE(T)(VEC(T) *, void(f)(T *));
+
 
 #define DEFINE_ITERATE(T)                                                      \
   void ITERATE(T)(VEC(T) * v, void(f)(T *)) {                                  \
@@ -132,7 +124,7 @@ void _Noreturn vec_creation_error(const char *error) {
  */
 #define FOLDL(T) FOLDL_##T
 
-#define DEFINE_PROTO_FOLDL(T) T FOLDL(T)(VEC(T) *, void(f)(T *, T *), T);
+
 
 #define DEFINE_FOLDL(T)                                                        \
   T FOLDL(T)(VEC(T) * v, void(f)(T *, T *), T accumulator) {                   \
@@ -154,7 +146,7 @@ void _Noreturn vec_creation_error(const char *error) {
  */
 #define FOLDR(T) FOLDR_##T
 
-#define DEFINE_PROTO_FOLDR(T) T FOLDR(T)(VEC(T) *, void(f)(T *, T *), T);
+
 
 #define DEFINE_FOLDR(T)                                                        \
   T FOLDR(T)(VEC(T) * v, void(f)(T *, T *), T accumulator) {                   \
@@ -169,7 +161,6 @@ void _Noreturn vec_creation_error(const char *error) {
  */
 #define CONCAT(T) CONCAT_##T
 
-#define DEFINE_PROTO_CONCAT(T) VEC(T) * CONCAT(T)(VEC(T) *, VEC(T) *);
 
 #define DEFINE_CONCAT(T)                                                       \
   VEC(T) * CONCAT(T)(VEC(T) * a, VEC(T) * b) {                                 \
@@ -212,7 +203,7 @@ void _Noreturn vec_creation_error(const char *error) {
 
 #define PRINT(T) PRINT_##T
 
-#define DEFINE_PROTO_PRINT(T) void PRINT(T)(VEC(T) *);
+
 
 #define DEFINE_PRINT(T)                                                        \
   void PRINT(T)(VEC(T) * v) {                                                  \
@@ -231,7 +222,6 @@ void _Noreturn vec_creation_error(const char *error) {
 
 #define HEAD(T) HEAD_##T
 
-#define DEFINE_PROTO_HEAD(T) T HEAD(T)(VEC(T) *);
 
 #define DEFINE_HEAD(T)								\
   T HEAD(T)(VEC(T) * v) {							\
@@ -244,7 +234,6 @@ void _Noreturn vec_creation_error(const char *error) {
 
 #define LAST(T) LAST_##T
 
-#define DEFINE_PROTO_LAST(T) T LAST(T)(VEC(T) *);
 
 #define DEFINE_LAST(T)								\
   T LAST(T)(VEC(T) * v) {							\
@@ -265,7 +254,6 @@ void _Noreturn vec_creation_error(const char *error) {
 
 #define MIN(T) MIN_##T
 
-#define DEFINE_PROTO_MIN(T) T MIN(T)(VEC(T) *, int (comp)(T, T));
 
 #define DEFINE_MIN(T)								\
   T MIN(T)(VEC(T) *v, int (comp)(T, T)) {					\
