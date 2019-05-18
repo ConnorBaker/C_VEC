@@ -63,18 +63,6 @@ void _Noreturn vec_creation_error(const char *error) {
   }
 
 /**
- * DEFINES THE FOR_EACH_PAR FUNCTION, WHICH OPERATES IN PARALLEL
- */
-#define DEFINE_FOR_EACH_PAR(T)                                                 \
-  void FOR_EACH_PAR(T)(VEC(T) * v, void(f)(T *)) {                             \
-    _Pragma("omp parallel for default(none) shared(v, f)") for (int i = 0;     \
-                                                                i < v->len;    \
-                                                                i++) {         \
-      f(v->dat + i);                                                           \
-    }                                                                          \
-  }
-
-/**
  * DEFINES THE REPEAT FUNCTION
  */
 #define DEFINE_REPEAT(T)                                                       \

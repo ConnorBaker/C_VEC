@@ -15,8 +15,6 @@
 
 #define FOR_EACH(T) FOR_EACH_##T
 
-#define FOR_EACH_PAR(T) FOR_EACH_PAR_##T
-
 #define REPEAT(T) REPEAT_##T
 
 #define ITERATE(T) ITERATE_##T

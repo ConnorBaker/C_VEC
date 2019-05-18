@@ -31,9 +31,6 @@ void vec_creation_error(const char *);
 
 #define DEFINE_PROTO_FOR_EACH(T) void FOR_EACH(T)(VEC(T) *, void(f)(T *));
 
-#define DEFINE_PROTO_FOR_EACH_PAR(T)                                          \
-  void FOR_EACH_PAR(T)(VEC(T) *, void(f)(T *));
-
 #define DEFINE_PROTO_REPEAT(T) VEC(T) * REPEAT(T)(T, int);
 
 #define DEFINE_PROTO_ITERATE(T) void ITERATE(T)(VEC(T) *, void(f)(T *));
