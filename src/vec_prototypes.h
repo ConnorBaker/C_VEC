@@ -17,7 +17,7 @@
 
 
 
-#define DEFINE_VEC(T)                                                         \
+#define DEFINE_VEC(T)                                                          \
   typedef struct vec_##T {                                                     \
     T *dat;                                                                    \
     int len;                                                                   \
