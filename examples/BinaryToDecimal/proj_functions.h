@@ -1,0 +1,20 @@
+//
+// Created by Connor Baker on 2019-05-18.
+//
+
+#ifndef BINARYTODECIMAL_PROJ_FUNCTIONS_H
+#define BINARYTODECIMAL_PROJ_FUNCTIONS_H
+
+#include "../../src/vec_prototypes.h"
+
+DEFINE_VEC(int)
+
+DEFINE_PROTO_NEW_VEC(int)
+
+DEFINE_PROTO_DEL_VEC(int)
+
+DEFINE_PROTO_FOLDL(int)
+
+DEFINE_PROTO_PRINT(int)
+
+#endif //BINARYTODECIMAL_PROJ_FUNCTIONS_H
